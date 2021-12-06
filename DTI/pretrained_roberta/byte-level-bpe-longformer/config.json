@@ -1,0 +1,6 @@
+{
+    "model_type": "longformer",
+    "max_position_embeddings": 2048,
+    "type_vocab_size": 1,
+    "vocab_size": 10261
+}
