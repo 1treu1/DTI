@@ -61,8 +61,8 @@ molTokenizer = RobertaTokenizer.from_pretrained(Chemberta_PATH) #Selfberta Token
 molEncoder = RobertaModel.from_pretrained(Chemberta_PATH) #Selfberta Model
 
 #Paccman Model
-Paccman_PATH = '~/DTI/DTI/pretrained_roberta/paccman'
-PaccLarge_PATH = '~/DTI/DTI/pretrained_roberta/exp4_longformer'
+Paccman_PATH = './DTI/DTI/pretrained_roberta/paccman'
+PaccLarge_PATH = './DTI/DTI/pretrained_roberta/exp4_longformer'
 proTokenizer = RobertaTokenizer.from_pretrained(PaccLarge_PATH) #Fastberta Tokenizer
 proEncoder = RobertaModel.from_pretrained(PaccLarge_PATH)  #Fastberta Model
 
