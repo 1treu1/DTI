@@ -149,7 +149,7 @@ def main(fold_n, lr):
     
 
     BATCH_SIZE = config['batch_size']
-    train_epoch = 3
+    train_epoch = 20
         
     loss_history = []
     Pre = []
@@ -211,7 +211,7 @@ def main(fold_n, lr):
     torch.backends.cudnn.benchmark = True
   
     for epo in range(train_epoch):
-  
+        torch.cuda.empty_cache()
         model.train()
         for i, (I, label) in enumerate(training_generator):
             
