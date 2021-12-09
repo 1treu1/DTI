@@ -65,7 +65,7 @@ Paccman_PATH = '~/DTI/DTI/pretrained_roberta/exp4_longformer'
 PaccLarge_PATH = '/home/ubuntu/DTI/DTI/pretrained_roberta/exp4_longformer'
 proTokenizer = RobertaTokenizer.from_pretrained(PaccLarge_PATH) ###Fastberta Tokenizer
 proEncoder = RobertaModel.from_pretrained(PaccLarge_PATH)  #Fastberta Model
-
+####################################
 def test(data_generator, model,df):
     
     y_pred = []
@@ -96,7 +96,7 @@ def test(data_generator, model,df):
         label_ids = label.to('cpu').numpy()
         y_label = y_label + label_ids.flatten().tolist()
         y_pred = y_pred + logits.flatten().tolist()
-        logit1.append(logits)
+        #logit1.append(logits)
         #print("count", count)
         #print("y_label", label_ids.flatten().tolist() )
         #print("y_predi", logits.flatten().tolist())
@@ -212,6 +212,8 @@ def main(fold_n, lr):
   
     for epo in range(train_epoch):
         torch.cuda.empty_cache()
+        print('before train')
+        #nombre=input()
         model.train()
         for i, (I, label) in enumerate(training_generator):
             
@@ -233,11 +235,15 @@ def main(fold_n, lr):
             
             if (i % 100 == 0):
                 print('Training at Epoch ' + str(epo + 1) + ' iteration ' + str(i) + ' with loss ' + str(loss.cpu().detach().numpy()))
-                
+
+            #print('after train')    
+            #nombre=input()
+          
 
             
         # every epoch test
         with torch.set_grad_enabled(False):
+            
             auc, auprc, f1, logits, loss = test(validation_generator, model,df_val)
             #loss = test(validation_generator, model,df_val)
             if auc > max_auc:
@@ -273,11 +279,13 @@ def main(fold_n, lr):
             print(exc_type, fname, exc_tb.tb_lineno)
             #texto3()
     return model_max, loss_history
+
 ###########################################################################################
 import warnings
 warnings.filterwarnings('ignore')
 
 s = time()
+torch.cuda.empty_cache()
 model_max, loss_history = main(1, 5e-7)
 e = time()
 print(e-s)
