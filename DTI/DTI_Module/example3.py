@@ -65,7 +65,7 @@ Paccman_PATH = '~/DTI/DTI/pretrained_roberta/exp4_longformer'
 PaccLarge_PATH = '/home/ubuntu/DTI/DTI/pretrained_roberta/exp4_longformer'
 proTokenizer = RobertaTokenizer.from_pretrained(PaccLarge_PATH) ###Fastberta Tokenizer
 proEncoder = RobertaModel.from_pretrained(PaccLarge_PATH)  #Fastberta Model
-"""
+
 def test(data_generator, model,df):
     
     y_pred = []
@@ -285,4 +285,3 @@ lh = list(filter(lambda x: x < 1, loss_history))
 plt.plot(lh)
 plt.savefig('loss.jpg')
 #######################################
-"""
