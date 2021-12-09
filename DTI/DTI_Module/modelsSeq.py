@@ -155,4 +155,4 @@ class Encoder(nn.Sequential):
         
         I=I.half().cuda()
 
-        return I 
+        return I #
