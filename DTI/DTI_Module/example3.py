@@ -61,11 +61,11 @@ molTokenizer = RobertaTokenizer.from_pretrained(Chemberta_PATH) #Selfberta Token
 molEncoder = RobertaModel.from_pretrained(Chemberta_PATH) #Selfberta Model
 
 #Paccman Model
-Paccman_PATH = '/DTI/DTI/pretrained_roberta/paccman'
-PaccLarge_PATH = '/DTI/DTI/pretrained_roberta/exp4_longformer'
-proTokenizer = RobertaTokenizer.from_pretrained('./DTI/DTI/pretrained_roberta/exp4_longformer') #Fastberta Tokenizer
-proEncoder = RobertaModel.from_pretrained('./DTI/DTI/pretrained_roberta/exp4_longformer')  #Fastberta Model
-
+Paccman_PATH = '~/DTI/DTI/pretrained_roberta/exp4_longformer'
+PaccLarge_PATH = '~/DTI/DTI/pretrained_roberta/exp4_longformer'
+proTokenizer = RobertaTokenizer.from_pretrained(PaccLarge_PATH) #Fastberta Tokenizer
+proEncoder = RobertaModel.from_pretrained(PaccLarge_PATH)  #Fastberta Model
+"""
 def test(data_generator, model,df):
     
     y_pred = []
@@ -285,3 +285,4 @@ lh = list(filter(lambda x: x < 1, loss_history))
 plt.plot(lh)
 plt.savefig('loss.jpg')
 #######################################
+"""
