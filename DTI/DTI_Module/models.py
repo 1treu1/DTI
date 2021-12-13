@@ -89,10 +89,10 @@ class InteractionFlat(nn.Sequential):
         f = f.view(int(self.batch_size/self.gpus), -1)
         #'''self.batch_size'''
         
-        print('Aquí5')
-        print(f)
+        #print('Aquí5')
+        #print(f.shape)
         score = self.decoder(f)
-        print("DDDD")
+        #print("DDDD")
         return score  
 
 class Encoder(nn.Sequential):
