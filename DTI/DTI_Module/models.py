@@ -76,23 +76,23 @@ class InteractionFlat(nn.Sequential):
         #f = self.icnn2(self.icnn1(i_v))
         index= index.cpu().detach().numpy()
         I = self.Encoder( df, index)
-        #print('Aquí2')
-        #print(I.shape)
+        print('Aquí2')
+        print(I.shape)
         I = torch.unsqueeze(I,1).repeat(1,1,1,1)
 
-        #print('Aquí3')
-        #print(I.shape)
+        print('Aquí3')
+        print(I.shape)
         f = self.icnn(I)
     
-        #print('Aquí4')
-        #print(f.shape)
+        print('Aquí4')
+        print(f.shape)
         f = f.view(int(self.batch_size/self.gpus), -1)
         #'''self.batch_size'''
         
-        #print('Aquí5')
-        #print(f.shape)
+        print('Aquí5')
+        print(f.shape)
         score = self.decoder(f)
-        #print("DDDD")
+        print("DDDD")
         return score  
 
 class Encoder(nn.Sequential):
