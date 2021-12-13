@@ -150,10 +150,10 @@ class Encoder(nn.Sequential):
                 
             except:
                 print("i[0]")
-                print(i[0].shape)
+                print(len(i[0]))
                 print(i[0])
                 print("i[1]")
-                print(i[1].shape)
+                print(len(i[1]))
                 print(i[1])
                 print('testing failed')
                 
