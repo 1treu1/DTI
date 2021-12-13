@@ -149,7 +149,13 @@ class Encoder(nn.Sequential):
                   
                 
             except:
-                  print('testing failed')
+                print("i[0]")
+                print(i[0].shape)
+                print(i[0])
+                print("i[1]")
+                print(i[1].shape)
+                print(i[1])
+                print('testing failed')
                 
         
         I=I.half().cuda()
