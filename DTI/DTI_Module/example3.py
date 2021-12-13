@@ -35,7 +35,9 @@ validloss = []
 testloss = []
 Prediccion = []
 Bin = []
+
 logit1 = []
+'''
 def texto1():
     np.savetxt("validloss.txt",validloss)
     
@@ -49,7 +51,7 @@ def texto2():
 def texto3():
     np.savetxt("testloss.txt",testloss)
     np.savetxt("validloss.txt",validloss)
-
+'''
 #-------------------------------------------------------
 
 use_cuda = torch.cuda.is_available()
@@ -163,8 +165,8 @@ def main(fold_n, lr):
 
 
     #print("Cargando el modelo")
-    #model.load_state_dict(torch.load(FILE))
-    #print("Modelo cargado")
+    model.load_state_dict(torch.load('/content/drive/MyDrive/DTI/model'))
+    print("Modelo cargado")
             
     opt = torch.optim.Adam(model.parameters(), lr = lr)
     #opt = torch.optim.SGD(model.parameters(), lr = lr, momentum=0.9)
@@ -227,13 +229,13 @@ def main(fold_n, lr):
             n = torch.squeeze(m(score))
   
             loss = loss_fct(n, label)
-            loss_history.append(loss)
             
             opt.zero_grad()
             loss.backward()
             opt.step()
             
             if (i % 100 == 0):
+                loss_history.append(loss)
                 print('Training at Epoch ' + str(epo + 1) + ' iteration ' + str(i) + ' with loss ' + str(loss.cpu().detach().numpy()))
 
             #print('after train')    
@@ -279,17 +281,15 @@ def main(fold_n, lr):
             print(exc_type, fname, exc_tb.tb_lineno)
             #texto3()
     return model_max, loss_history
-
 ###########################################################################################
 import warnings
 warnings.filterwarnings('ignore')
 
 s = time()
 torch.cuda.empty_cache()
-model_max, loss_history = main(1, 5e-7)
+model_max, loss_history = main(1, 5e-5)
 e = time()
 print(e-s)
 lh = list(filter(lambda x: x < 1, loss_history))
 plt.plot(lh)
-plt.savefig('loss.jpg')
 #######################################
