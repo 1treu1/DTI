@@ -104,6 +104,8 @@ def test(data_generator, model,df):
         #print("y_predi", logits.flatten().tolist())
      
     loss = loss_accumulate/count
+    print("Y pred")
+    print(y_pred)
     
     fpr, tpr, thresholds = roc_curve(y_label, y_pred)
     print("4")
