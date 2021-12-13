@@ -165,7 +165,7 @@ def main(fold_n, lr):
 
 
     #print("Cargando el modelo")
-    model.load_state_dict(torch.load('/home/ubuntu/DTI/DTI/model'))
+    #model.load_state_dict(torch.load('/home/ubuntu/DTI/DTI/model'))
     print("Modelo cargado")
             
     opt = torch.optim.Adam(model.parameters(), lr = lr)
