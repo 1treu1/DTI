@@ -279,10 +279,10 @@ def main(fold_n, lr):
             #print( ' Test loss: '+str(loss))
             print("Guardando en la lista")
             ##################################
-            #Prediccion.append(Pre)
-            #testloss.append(loss)
-            #Bin.append(Binario)
-            #texto2()
+            Prediccion.append(Pre)
+            testloss.append(loss)
+            Bin.append(Binario)
+            texto2()
             #torch.save(model.state_dict(), FILE)
     except Exception as e:
             #print('testing failed')
@@ -291,6 +291,16 @@ def main(fold_n, lr):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
             #texto3()
+            pynvml.nvmlInit()
+            # Aquí 1 es la identificación de la GPU
+            handle = pynvml.nvmlDeviceGetHandleByIndex(1)
+            meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
+            print("Espacio total")
+            print (((meminfo.total)/1024)/1024) # Tamaño total de la memoria de video de la segunda tarjeta gráfica
+            print("Memoria usada")
+            print (((meminfo.used)/1024)/1024) # Aquí hay bytes, así que si quieres obtener megaM, debes dividir entre 1024 ** 2
+            print("Memoria libre")
+            print (((meminfo.free)/1024)/1024) 
     return model_max, loss_history
 ###########################################################################################
 import warnings
