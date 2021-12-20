@@ -31,26 +31,27 @@ from models import InteractionFlat
 
 #-------------------------------------------------------
 
-validloss = [] 
-testloss = []
-Prediccion = []
-Bin = []
+trainAUPRC  = []
+trainAUCROC  = []
+ResultLoss  = []
+validAUPRC  = []
+validAUCROC  = []
+testAUPRC  = []
+testAUCROC  = []
 
 logit1 = []
 
-def texto1():
-    np.savetxt("validloss.txt",validloss)
+def texto():
+    np . savetxt ( "trenAUPRC.txt" , trainAUPRC )
+    np . savetxt ( "trenAUCROC.txt" , trainAUCROC )
+    np . savetxt ( "testAUPRC.txt" , testAUPRC )
+    np . savetxt ( "testAUCROC.txt" , testAUCROC )
+    np . savetxt ( "validAUPRC.txt" , validAUPRC )
+    np . savetxt ( "validAUCROC.txt" , validAUCROC )
+    np . savetxt ( "Loss.txt" , ResultLoss )
     
     #Result = np.loadtxt("") 
-def texto2():
-    np.savetxt("testloss.txt",testloss)
-    np.savetxt("Pre.txt",Prediccion)
-    np.savetxt("Bin.txt",Bin)
-    np.savetxt("logit.txt",logit1)
-    
-def texto3():
-    np.savetxt("testloss.txt",testloss)
-    np.savetxt("validloss.txt",validloss)
+
 
 #-------------------------------------------------------
 
@@ -248,7 +249,9 @@ def main(fold_n, lr):
             if (i % 100 == 0):
                 loss_history.append(loss)
                 print('Training at Epoch ' + str(epo + 1) + ' iteration ' + str(i) + ' with loss ' + str(loss.cpu().detach().numpy()))
-
+                trainAUCROC.append(auc)
+                trainAUPRC.append(auprc)
+                texto()
             #print('after train')    
             #nombre=input()
           
@@ -264,8 +267,9 @@ def main(fold_n, lr):
                 max_auc = auc
             
             print('Validation at Epoch '+ str(epo + 1) +  ' , Test loss: '+ str(loss))
-            validloss.append(loss)
-            texto1()
+            validAUCROC.append(auc)
+            validAUPRC.append(auprc)
+            texto()
     
     print('--- Go for Testing ---')
    
@@ -279,10 +283,9 @@ def main(fold_n, lr):
             #print( ' Test loss: '+str(loss))
             print("Guardando en la lista")
             ##################################
-            Prediccion.append(Pre)
-            testloss.append(loss)
-            Bin.append(Binario)
-            texto2()
+            testAUCROC.append(auc)
+            testAUPRC.append(auprc)
+            texto()
             #torch.save(model.state_dict(), FILE)
     except Exception as e:
             #print('testing failed')
