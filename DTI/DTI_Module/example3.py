@@ -95,7 +95,8 @@ def test(data_generator, model,df):
         count += 1
         
         logits = logits.detach().cpu().numpy()
-        #print(logits)
+        print("Tipo de dato logits")
+        print(logits)
         
         #print("3")
         label_ids = label.to('cpu').numpy()
