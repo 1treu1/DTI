@@ -87,7 +87,7 @@ def test(data_generator, model,df):
        
         label = torch.tensor(label).half().cuda()
         print("Tipo de dato de label")
-        print(np.dtype(label))
+        np.dtype(label)
 
         loss = loss_fct(logits, label)
         
