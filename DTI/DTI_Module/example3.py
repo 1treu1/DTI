@@ -190,7 +190,7 @@ def main(fold_n, lr):
               'drop_last': True}
 
    
-    dataFolder = './dataset/prueba'
+    dataFolder = './dataset/DAVIS'
     df_train = pd.read_csv(dataFolder + '/test.csv')
     df_val = pd.read_csv(dataFolder + '/test.csv')
     df_test = pd.read_csv(dataFolder + '/test.csv')
