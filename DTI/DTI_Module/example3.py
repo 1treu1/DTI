@@ -86,8 +86,8 @@ def test(data_generator, model,df):
             
        
         label = torch.tensor(label).half().cuda()
-        print("Tipo de dato de label")
-        print(label)
+        #print("Tipo de dato de label")
+        #print(label)
 
         loss = loss_fct(logits, label)
         
@@ -95,8 +95,8 @@ def test(data_generator, model,df):
         count += 1
         
         logits = logits.detach().cpu().numpy()
-        print("Tipo de dato logits")
-        print(logits)
+        #print("Tipo de dato logits")
+        #print(logits)
         
         #print("3")
         label_ids = label.to('cpu').numpy()
@@ -109,15 +109,15 @@ def test(data_generator, model,df):
         #print("y_predi", logits.flatten().tolist())
      
     loss = loss_accumulate/count
-    print("Y pred")
-    print(y_pred)
-    print("Y_label")
-    print(y_label)
-    print("loss")
-    print(loss)
+    #print("Y pred")
+    #print(y_pred)
+    #print("Y_label")
+    #print(y_label)
+    #print("loss")
+    #print(loss)
     
     fpr, tpr, thresholds = roc_curve(y_label, y_pred)
-    print("4")
+    #print("4")
     precision = tpr / (tpr + fpr)
 
     f1 = 2 * precision * tpr / (tpr + precision + 0.00001)
