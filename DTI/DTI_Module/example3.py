@@ -77,8 +77,8 @@ def test(data_generator, model,df):
     count = 0.0
     for i, (I,label) in enumerate(data_generator):
        
-        #with autocast():
-        score = model.forward(df,I)
+        with autocast():
+              score = model.forward(df.half(),I.half())
        
         loss_fct = torch.nn.BCELoss() 
         m = torch.nn.Sigmoid()
