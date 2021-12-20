@@ -98,7 +98,7 @@ def test(data_generator, model,df):
         label_ids = label.to('cpu').numpy()
         y_label = y_label + label_ids.flatten().tolist()
         y_pred = y_pred + logits.flatten().tolist()
-        y_pred = y_pred//1
+        #y_pred = y_pred//1
         #logit1.append(logits)
         #print("count", count)
         #print("y_label", label_ids.flatten().tolist() )
