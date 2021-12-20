@@ -107,6 +107,8 @@ def test(data_generator, model,df):
     loss = loss_accumulate/count
     print("Y pred")
     print(y_pred)
+    print("Y_label")
+    print(y_label)
     
     fpr, tpr, thresholds = roc_curve(y_label, y_pred)
     print("4")
