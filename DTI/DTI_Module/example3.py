@@ -77,32 +77,33 @@ def test(data_generator, model,df):
     count = 0.0
     for i, (I,label) in enumerate(data_generator):
        
-        with autocast():
-              score = model.forward(df,I)
-              loss_fct = torch.nn.BCELoss() 
-              m = torch.nn.Sigmoid()
-              logits = torch.squeeze(m(score))    
-        
-              label = torch.tensor(label).half().cuda()
+        #with autocast():
+        score = model.forward(df,I)
+       
+        loss_fct = torch.nn.BCELoss() 
+        m = torch.nn.Sigmoid()
+        logits = torch.squeeze(m(score))    
+       
+        label = torch.tensor(label).half().cuda()
 
-              loss = loss_fct(logits, label)
-            
-              loss_accumulate += loss
-              count += 1
-            
-              logits = logits.detach().cpu().numpy()
-            #print(logits)
-            
-            #print("3")
-              label_ids = label.to('cpu').numpy()
-              y_label = y_label + label_ids.flatten().tolist()
-              y_pred = y_pred + logits.flatten().tolist()
-            #y_pred = y_pred//1
-            #logit1.append(logits)
-            #print("count", count)
-            #print("y_label", label_ids.flatten().tolist() )
-            #print("y_predi", logits.flatten().tolist())
-     ##################
+        loss = loss_fct(logits, label)
+        
+        loss_accumulate += loss
+        count += 1
+        
+        logits = logits.detach().cpu().numpy()
+        #print(logits)
+        
+        #print("3")
+        label_ids = label.to('cpu').numpy()
+        y_label = y_label + label_ids.flatten().tolist()
+        y_pred = y_pred + logits.flatten().tolist()
+        ##y_pred = y_pred//1
+        #logit1.append(logits)
+        #print("count", count)
+        #print("y_label", label_ids.flatten().tolist() )
+        #print("y_predi", logits.flatten().tolist())
+     
     loss = loss_accumulate/count
     print("Y pred")
     print(y_pred)
