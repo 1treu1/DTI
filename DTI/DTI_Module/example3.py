@@ -79,12 +79,15 @@ def test(data_generator, model,df):
        
         with autocast():
               score = model.forward(df,I)
-       
-        loss_fct = torch.nn.BCELoss() 
         m = torch.nn.Sigmoid()
-        logits = torch.squeeze(m(score))    
+        logits = torch.squeeze(m(score))
+        loss_fct = torch.nn.BCELoss() 
+        
+            
        
         label = torch.tensor(label).half().cuda()
+        print("Tipo de dato de label")
+        print(np.dtype(label))
 
         loss = loss_fct(logits, label)
         
