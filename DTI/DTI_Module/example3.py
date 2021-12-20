@@ -113,6 +113,8 @@ def test(data_generator, model,df):
     print(y_pred)
     print("Y_label")
     print(y_label)
+    print("loss")
+    print(loss)
     
     fpr, tpr, thresholds = roc_curve(y_label, y_pred)
     print("4")
