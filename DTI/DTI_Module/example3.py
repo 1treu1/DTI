@@ -37,7 +37,7 @@ Prediccion = []
 Bin = []
 
 logit1 = []
-'''
+
 def texto1():
     np.savetxt("validloss.txt",validloss)
     
@@ -51,7 +51,7 @@ def texto2():
 def texto3():
     np.savetxt("testloss.txt",testloss)
     np.savetxt("validloss.txt",validloss)
-'''
+
 #-------------------------------------------------------
 
 use_cuda = torch.cuda.is_available()
@@ -264,8 +264,8 @@ def main(fold_n, lr):
                 max_auc = auc
             
             print('Validation at Epoch '+ str(epo + 1) +  ' , Test loss: '+ str(loss))
-            #validloss.append(loss)
-            #texto1()
+            validloss.append(loss)
+            texto1()
     
     print('--- Go for Testing ---')
    
