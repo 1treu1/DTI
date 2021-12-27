@@ -249,8 +249,8 @@ def main(fold_n, lr):
             if (i % 100 == 0):
                 loss_history.append(loss)
                 print('Training at Epoch ' + str(epo + 1) + ' iteration ' + str(i) + ' with loss ' + str(loss.cpu().detach().numpy()))
-                trainAUCROC.append(auc)
-                trainAUPRC.append(auprc)
+                ResultLoss.append(loss.cpu().detach().numpy())
+                #trainAUPRC.append(auprc)
                 texto()
             #print('after train')    
             #nombre=input()
@@ -267,8 +267,7 @@ def main(fold_n, lr):
                 max_auc = auc
             
             print('Validation at Epoch '+ str(epo + 1) +  ' , Test loss: '+ str(loss))
-            validAUCROC.append(auc)
-            validAUPRC.append(auprc)
+            ResultLoss.append(loss.cpu().detach().numpy())
             texto()
     
     print('--- Go for Testing ---')
@@ -283,6 +282,7 @@ def main(fold_n, lr):
             #print( ' Test loss: '+str(loss))
             print("Guardando en la lista")
             ##################################
+            ResultLoss.append(loss.cpu().detach().numpy())
             testAUCROC.append(auc)
             testAUPRC.append(auprc)
             texto()
