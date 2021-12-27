@@ -267,7 +267,7 @@ def main(fold_n, lr):
                 max_auc = auc
             
             print('Validation at Epoch '+ str(epo + 1) +  ' , Test loss: '+ str(loss))
-            ResultLoss.append(loss.cpu().detach().numpy())
+            ResultLoss.append(loss)
             texto()
     
     print('--- Go for Testing ---')
@@ -282,7 +282,7 @@ def main(fold_n, lr):
             #print( ' Test loss: '+str(loss))
             print("Guardando en la lista")
             ##################################
-            ResultLoss.append(loss.cpu().detach().numpy())
+            ResultLoss.append(loss)
             testAUCROC.append(auc)
             testAUPRC.append(auprc)
             texto()
