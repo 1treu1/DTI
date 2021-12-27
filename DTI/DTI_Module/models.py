@@ -6,7 +6,7 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 import numpy as np
 import pandas as pd
-import pynvml ##
+
 import collections
 import math
 import copy
@@ -74,7 +74,6 @@ class InteractionFlat(nn.Sequential):
 
     def forward(self, df,index):
         #f = self.icnn2(self.icnn1(i_v))
-        
         index= index.cpu().detach().numpy()
         I = self.Encoder( df, index)
         #print('Aquí2')
@@ -144,40 +143,15 @@ class Encoder(nn.Sequential):
                   
                   I = outputI
                   cont = 1
-
                 else:
                   
                   I = torch.cat((I,outputI),0).half().cuda()
-                  #print("I cat")
-                  #print(I.shape)
-                  #print(len(I))
                   
                 
             except:
-                                
-                
-                pynvml.nvmlInit()
-                # Aquí 1 es la identificación de la GPU
-                handle = pynvml.nvmlDeviceGetHandleByIndex(1)
-                meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
-                print("Espacio total")
-                print (((meminfo.total)/1024)/1024) # Tamaño total de la memoria de video de la segunda tarjeta gráfica
-                print("Memoria usada")
-                print (((meminfo.used)/1024)/1024) # Aquí hay bytes, así que si quieres obtener megaM, debes dividir entre 1024 ** 2
-                print("Memoria libre")
-                print (((meminfo.free)/1024)/1024) 
-                print("i[0] SMILES")
-                print(len(i[0]))
-                #print(i[0])
-                print("i[1] FASTA")
-                print(len(i[1]))
-                #print(i[1])
-                print('testing failed')
+                  print('testing failed')
                 
         
         I=I.half().cuda()
-        #print("Salida del encoder")
-        #print(I.shape)
-        #print(len(I))
 
         return I 
