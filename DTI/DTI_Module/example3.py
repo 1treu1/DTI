@@ -155,7 +155,7 @@ def main(fold_n, lr):
     
 
     BATCH_SIZE = config['batch_size']
-    train_epoch = 15
+    train_epoch = 50
         
     loss_history = []
     Pre = []
