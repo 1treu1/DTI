@@ -38,7 +38,8 @@ validAUPRC  = []
 validAUCROC  = []
 testAUPRC  = []
 testAUCROC  = []
-
+ResultTestLoss = []
+ResultValidLoss = []
 logit1 = []
 
 def texto():
@@ -49,6 +50,9 @@ def texto():
     np . savetxt ( "validAUPRC.txt" , validAUPRC )
     np . savetxt ( "validAUCROC.txt" , validAUCROC )
     np . savetxt ( "Loss.txt" , ResultLoss )
+    np . savetxt ( "testLoss.txt" , ResultTestLoss )
+    np . savetxt ( "validLoss.txt" , ResultValidLoss )
+
     
     #Result = np.loadtxt("") 
 
@@ -250,6 +254,7 @@ def main(fold_n, lr):
                 loss_history.append(loss)
                 print('Training at Epoch ' + str(epo + 1) + ' iteration ' + str(i) + ' with loss ' + str(loss.cpu().detach().numpy()))
                 ResultLoss.append(loss.cpu().detach().numpy())
+                
                 #trainAUPRC.append(auprc)
                 texto()
             #print('after train')    
@@ -266,8 +271,10 @@ def main(fold_n, lr):
                 model_max = copy.deepcopy(model)
                 max_auc = auc
             
-            print('Validation at Epoch '+ str(epo + 1) +  ' , Test loss: '+ str(loss))
-            ResultLoss.append(loss)
+            print('Validation at Epoch '+ str(epo + 1) +  ' , Test loss: '+ str(loss)+  ' , AUC: '+ str(auc)+  ' , AUPR: '+ str(auprc))
+            ResultValidLoss.append(loss)
+            validAUCROC.append(auc)
+            validAUPRC.append(auprc)
             texto()
     
     print('--- Go for Testing ---')
@@ -282,7 +289,7 @@ def main(fold_n, lr):
             #print( ' Test loss: '+str(loss))
             print("Guardando en la lista")
             ##################################
-            ResultLoss.append(loss)
+            ResultTestLoss.append(loss)
             testAUCROC.append(auc)
             testAUPRC.append(auprc)
             texto()
