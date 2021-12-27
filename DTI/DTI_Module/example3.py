@@ -1,4 +1,3 @@
-#-------------------------------------------------------
 import torch
 from torch.autograd import Variable
 import torch.nn.functional as F
@@ -84,15 +83,12 @@ def test(data_generator, model,df):
        
         with autocast():
               score = model.forward(df,I)
-        m = torch.nn.Sigmoid()
-        logits = torch.squeeze(m(score))
+       
         loss_fct = torch.nn.BCELoss() 
-        
-            
+        m = torch.nn.Sigmoid()
+        logits = torch.squeeze(m(score))    
        
         label = torch.tensor(label).half().cuda()
-        #print("Tipo de dato de label")
-        #print(label)
 
         loss = loss_fct(logits, label)
         
@@ -100,29 +96,21 @@ def test(data_generator, model,df):
         count += 1
         
         logits = logits.detach().cpu().numpy()
-        #print("Tipo de dato logits")
         #print(logits)
         
         #print("3")
         label_ids = label.to('cpu').numpy()
         y_label = y_label + label_ids.flatten().tolist()
         y_pred = y_pred + logits.flatten().tolist()
-        ##y_pred = y_pred//1
         #logit1.append(logits)
         #print("count", count)
         #print("y_label", label_ids.flatten().tolist() )
         #print("y_predi", logits.flatten().tolist())
      
     loss = loss_accumulate/count
-    #print("Y pred")
-    #print(y_pred)
-    #print("Y_label")
-    #print(y_label)
-    #print("loss")
-    #print(loss)
     
     fpr, tpr, thresholds = roc_curve(y_label, y_pred)
-    #print("4")
+    print("4")
     precision = tpr / (tpr + fpr)
 
     f1 = 2 * precision * tpr / (tpr + precision + 0.00001)
@@ -159,15 +147,15 @@ def test(data_generator, model,df):
     #print("Saliendo de Testing")
     
     #return logits, y_pred, loss.item() #roc_auc_score(y_label, y_pred), average_precision_score(y_label, y_pred), f1_score(y_label, outputs), y_pred, loss.item()
-    return roc_auc_score(y_label, y_pred), average_precision_score(y_label, y_pred), f1_score(y_label, outputs), y_pred, loss.item()
-##########################################################################################################
+    return roc_auc_score(y_label, y_pred), average_precision_score(y_label, y_pred), f1_score(y_label, outputs), y_pred, loss.item()##########################################################################################################
 #FILE = "/content/drive/MyDrive/model/model.pth"
+
 def main(fold_n, lr):
     config = Set_config()
     
 
     BATCH_SIZE = config['batch_size']
-    train_epoch = 50
+    train_epoch = 15
         
     loss_history = []
     Pre = []
@@ -181,8 +169,8 @@ def main(fold_n, lr):
 
 
     #print("Cargando el modelo")
-    #model.load_state_dict(torch.load('/home/ubuntu/DTI/DTI/model'))
-    print("Modelo cargado")
+    #model.load_state_dict(torch.load('/content/drive/MyDrive/DTI/model'))
+    #print("Modelo cargado")
             
     opt = torch.optim.Adam(model.parameters(), lr = lr)
     #opt = torch.optim.SGD(model.parameters(), lr = lr, momentum=0.9)
@@ -191,7 +179,7 @@ def main(fold_n, lr):
         
     params = {'batch_size': BATCH_SIZE,
               'shuffle': True,
-              'num_workers': 2, 
+              'num_workers': 4, 
               'drop_last': True}
 
    
@@ -254,8 +242,6 @@ def main(fold_n, lr):
                 loss_history.append(loss)
                 print('Training at Epoch ' + str(epo + 1) + ' iteration ' + str(i) + ' with loss ' + str(loss.cpu().detach().numpy()))
                 ResultLoss.append(loss.cpu().detach().numpy())
-                
-                #trainAUPRC.append(auprc)
                 texto()
             #print('after train')    
             #nombre=input()
@@ -271,11 +257,13 @@ def main(fold_n, lr):
                 model_max = copy.deepcopy(model)
                 max_auc = auc
             
-            print('Validation at Epoch '+ str(epo + 1) +  ' , Test loss: '+ str(loss)+  ' , AUC: '+ str(auc)+  ' , AUPR: '+ str(auprc))
+            print('Validation at Epoch '+ str(epo + 1) +  ' , Test loss: '+ str(loss)+  ' , AUC: '+ str(auc)+  ' , AUPRC: '+ str(auprc))
             ResultValidLoss.append(loss)
             validAUCROC.append(auc)
             validAUPRC.append(auprc)
-            texto()
+
+            #validloss.append(loss)
+            #texto1()
     
     print('--- Go for Testing ---')
    
@@ -286,14 +274,10 @@ def main(fold_n, lr):
             #Binario, Pre, loss = test(testing_generator, model_max,df_test)
             print("Salio de test")
             print('Testing AUROC: ' + str(auc) + ' , AUPRC: ' + str(auprc) + ' , F1: '+str(f1) + ' , Test loss: '+str(loss))
-            #print( ' Test loss: '+str(loss))
-            print("Guardando en la lista")
-            ##################################
             ResultTestLoss.append(loss)
             testAUCROC.append(auc)
             testAUPRC.append(auprc)
-            texto()
-            #torch.save(model.state_dict(), FILE)
+           
     except Exception as e:
             #print('testing failed')
             print('testing failed: {}'.format(e))
@@ -301,28 +285,17 @@ def main(fold_n, lr):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print(exc_type, fname, exc_tb.tb_lineno)
             #texto3()
-            pynvml.nvmlInit()
-            # Aquí 1 es la identificación de la GPU
-            handle = pynvml.nvmlDeviceGetHandleByIndex(1)
-            meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
-            print("Espacio total")
-            print (((meminfo.total)/1024)/1024) # Tamaño total de la memoria de video de la segunda tarjeta gráfica
-            print("Memoria usada")
-            print (((meminfo.used)/1024)/1024) # Aquí hay bytes, así que si quieres obtener megaM, debes dividir entre 1024 ** 2
-            print("Memoria libre")
-            print (((meminfo.free)/1024)/1024) 
     return model_max, loss_history
-###########################################################################################
+
 import warnings
 warnings.filterwarnings('ignore')
 
 s = time()
 torch.cuda.empty_cache()
-model_max, loss_history = main(1, 5e-5)
+model_max, loss_history = main(1, 5e-8)
 e = time()
 q = e-s
 r = (q*60)/3600
 print(r,"min")
 lh = list(filter(lambda x: x < 1, loss_history))
 plt.plot(lh)
-#######################################
