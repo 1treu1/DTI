@@ -43,8 +43,8 @@ ResultValidLoss = []
 logit1 = []
 
 def texto():
-    np . savetxt ( "trenAUPRC.txt" , trainAUPRC )
-    np . savetxt ( "trenAUCROC.txt" , trainAUCROC )
+    np . savetxt ( "trainAUPRC.txt" , trainAUPRC )
+    np . savetxt ( "trainAUCROC.txt" , trainAUCROC )
     np . savetxt ( "testAUPRC.txt" , testAUPRC )
     np . savetxt ( "testAUCROC.txt" , testAUCROC )
     np . savetxt ( "validAUPRC.txt" , validAUPRC )
@@ -167,7 +167,7 @@ def main(fold_n, lr):
     
 
     BATCH_SIZE = config['batch_size']
-    train_epoch = 20
+    train_epoch = 50
         
     loss_history = []
     Pre = []
@@ -320,7 +320,9 @@ s = time()
 torch.cuda.empty_cache()
 model_max, loss_history = main(1, 5e-5)
 e = time()
-print(e-s)
+q = e-s
+r = (q*60)/3600
+print(r,"min")
 lh = list(filter(lambda x: x < 1, loss_history))
 plt.plot(lh)
 #######################################
