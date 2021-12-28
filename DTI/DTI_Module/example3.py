@@ -261,7 +261,7 @@ def main(fold_n, lr):
             ResultValidLoss.append(loss)
             validAUCROC.append(auc)
             validAUPRC.append(auprc)
-
+            texto()
             #validloss.append(loss)
             #texto1()
     
@@ -277,6 +277,7 @@ def main(fold_n, lr):
             ResultTestLoss.append(loss)
             testAUCROC.append(auc)
             testAUPRC.append(auprc)
+            texto()
            
     except Exception as e:
             #print('testing failed')
