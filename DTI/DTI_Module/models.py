@@ -53,7 +53,7 @@ class InteractionFlat(nn.Sequential):
         
         self.flatten_dim = config['flat_dim'] 
         
-        self.icnn = nn.Conv2d(1, 3, (30,30),stride=(4,4) , padding = 0)
+        self.icnn = nn.Conv2d(1, 3, (10,10),stride=(4,4) , padding = 0)
 
         #self.icnn2 = nn.Conv2d(3, 3, (300,300), padding = 0)
         
@@ -90,8 +90,8 @@ class InteractionFlat(nn.Sequential):
         f = f.view(int(self.batch_size/self.gpus), -1)
         #'''self.batch_size'''
         
-        #print('Aquí5')
-        #print(f.shape)
+        print('Aquí5')
+        print(f.shape)
         score = self.decoder(f)
         #print("DDDD")
         return score  
