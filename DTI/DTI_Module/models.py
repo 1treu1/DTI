@@ -62,15 +62,19 @@ class InteractionFlat(nn.Sequential):
             nn.ReLU(True),
             
             nn.BatchNorm1d(512),
-            nn.Linear(512, 64),
+            nn.Linear(512, 200),
             nn.ReLU(True),
             
+            nn.BatchNorm1d(200),
+            nn.Linear(200, 64),
+            nn.ReLU(True),
+
             nn.BatchNorm1d(64),
-            nn.Linear(64, 32),
+            nn.Linear(64, 14),
             nn.ReLU(True),
             
             #output layer
-            nn.Linear(32, 1)
+            nn.Linear(14, 1)
         )
 
     def forward(self, df,index):
