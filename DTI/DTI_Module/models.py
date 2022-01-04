@@ -53,7 +53,7 @@ class InteractionFlat(nn.Sequential):
         
         self.flatten_dim = config['flat_dim'] 
         
-        self.icnn = nn.Conv2d(1, 3, (50,50),stride=(4,4) , padding = 0)
+        self.icnn = nn.Conv2d(1, 3, (30,30),stride=(4,4) , padding = 0)
 
         #self.icnn2 = nn.Conv2d(3, 3, (300,300), padding = 0)
         
@@ -62,15 +62,27 @@ class InteractionFlat(nn.Sequential):
             nn.ReLU(True),
             
             nn.BatchNorm1d(512),
-            nn.Linear(512, 200),
+            nn.Linear(512, 400),
             nn.ReLU(True),
             
-            nn.BatchNorm1d(200),
-            nn.Linear(200, 64),
+            nn.BatchNorm1d(400),
+            nn.Linear(400, 300),
             nn.ReLU(True),
 
-            nn.BatchNorm1d(64),
-            nn.Linear(64, 14),
+            nn.BatchNorm1d(300),
+            nn.Linear(300, 200),
+            nn.ReLU(True),
+
+            nn.BatchNorm1d(200),
+            nn.Linear(200, 100),
+            nn.ReLU(True),
+
+            nn.BatchNorm1d(100),
+            nn.Linear(100, 50),
+            nn.ReLU(True),
+
+            nn.BatchNorm1d(50),
+            nn.Linear(50, 14),
             nn.ReLU(True),
             
             #output layer
