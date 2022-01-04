@@ -23,5 +23,5 @@ def Set_config():
     config['num_attention_heads'] = 12
     config['attention_probs_dropout_prob'] = 0.1
     config['hidden_dropout_prob'] = 0.1
-    config['flat_dim'] =  108300 #97200 #108300 #102675 #108300 #102675 #137085 #7803 #137085 #110592 #1760268#78192
+    config['flat_dim'] =   102675 #97200 #108300 #102675 #108300 #102675 #137085 #7803 #137085 #110592 #1760268#78192
     return config
