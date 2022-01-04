@@ -40,6 +40,7 @@ testAUCROC  = []
 ResultTestLoss = []
 ResultValidLoss = []
 logit1 = []
+max1 = []
 
 def texto():
     np . savetxt ( "trainAUPRC.txt" , trainAUPRC )
@@ -51,6 +52,7 @@ def texto():
     np . savetxt ( "Loss.txt" , ResultLoss )
     np . savetxt ( "testLoss.txt" , ResultTestLoss )
     np . savetxt ( "validLoss.txt" , ResultValidLoss )
+    np . savetxt ( "max.txt" , max1 )
 
     
     #Result = np.loadtxt("") 
@@ -256,6 +258,7 @@ def main(fold_n, lr):
             if auc > max_auc:
                 model_max = copy.deepcopy(model)
                 max_auc = auc
+                max1.append(max_auc)
             
             print('Validation at Epoch '+ str(epo + 1) +  ' , Test loss: '+ str(loss)+  ' , AUC: '+ str(auc)+  ' , AUPRC: '+ str(auprc))
             ResultValidLoss.append(loss)
