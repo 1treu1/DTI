@@ -58,35 +58,27 @@ class InteractionFlat(nn.Sequential):
         #self.icnn2 = nn.Conv2d(3, 3, (300,300), padding = 0)
         
         self.decoder = nn.Sequential(
-            nn.Linear(self.flatten_dim, 512),
+            nn.Linear(self.flatten_dim, 32768),
             nn.ReLU(True),
             
+            nn.BatchNorm1d(32768),
+            nn.Linear(32768, 2048),
+            nn.ReLU(True),
+            
+            nn.BatchNorm1d(2048),
+            nn.Linear(2048, 512),
+            nn.ReLU(True),
+
             nn.BatchNorm1d(512),
-            nn.Linear(512, 400),
-            nn.ReLU(True),
-            
-            nn.BatchNorm1d(400),
-            nn.Linear(400, 300),
+            nn.Linear(512, 64),
             nn.ReLU(True),
 
-            nn.BatchNorm1d(300),
-            nn.Linear(300, 200),
+            nn.BatchNorm1d(64),
+            nn.Linear(64, 32),
             nn.ReLU(True),
 
-            nn.BatchNorm1d(200),
-            nn.Linear(200, 100),
-            nn.ReLU(True),
-
-            nn.BatchNorm1d(100),
-            nn.Linear(100, 50),
-            nn.ReLU(True),
-
-            nn.BatchNorm1d(50),
-            nn.Linear(50, 14),
-            nn.ReLU(True),
-            
             #output layer
-            nn.Linear(14, 1)
+            nn.Linear(32, 1)
         )
 
     def forward(self, df,index):

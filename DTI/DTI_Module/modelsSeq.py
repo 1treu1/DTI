@@ -51,15 +51,20 @@ class InteractionFlat(nn.Sequential):
         self.attention_probs_dropout_prob = config['attention_probs_dropout_prob']
         self.hidden_dropout_prob = config['hidden_dropout_prob']
         
-        self.flatten_dim = 2*768 #config['flat_dim'] 
+        self.flatten_dim = 1536
         
-        self.icnn = nn.Conv2d(1, 3, (3,3),stride=(4,4), padding = 0)
+        #self.icnn = nn.Conv2d(1, 3, (3,3),stride=(4,4), padding = 0)
         #self.icnn2 = nn.Conv2d(3, 3, (300,300), padding = 0)
         
         self.decoder = nn.Sequential(
-            nn.Linear(self.flatten_dim, 512),
+            nn.Linear(self.flatten_dim, 1024),
             nn.ReLU(True),
-            
+                      
+            nn.BatchNorm1d(1024),
+            nn.Linear(1024, 512),
+            nn.ReLU(True),
+
+
             nn.BatchNorm1d(512),
             nn.Linear(512, 64),
             nn.ReLU(True),
@@ -76,21 +81,13 @@ class InteractionFlat(nn.Sequential):
         #f = self.icnn2(self.icnn1(i_v))
         index= index.cpu().detach().numpy()
         I = self.Encoder( df, index)
-        #print('Aquí2')
-        #print(I.shape)
-        #I = torch.unsqueeze(I,1).repeat(1,1,1,1)
-
-        #print('Aquí3')
-        #print(I.shape)
-        #f = self.icnn(I)
-    
-        #print('Aquí4')
+       
         #print(f.shape)
         #f = f.view(int(self.batch_size/self.gpus), -1)
         #'''self.batch_size'''
         
         #print('Aquí5')
-        #print(f.shape)
+        #print(I.shape)
         score = self.decoder(I)
         #print("DDDD")
         return score  
@@ -130,15 +127,17 @@ class Encoder(nn.Sequential):
       
                 inputP['input_ids']=inputP['input_ids'].cuda()
                 inputP['attention_mask']=inputP['attention_mask'].cuda()
-               
-                outputM = molEncoder(**inputM).pooler_output
+                
+                outputM = molEncoder(**inputM).pooler_output.half().cuda()
                 outputP = proEncoder(**inputP).pooler_output.half().cuda()
                 
                 #print(iter)
-                #iter +=1
+                #iter +=
 
-                outputI = torch.cat((outputM[0], outputP[0]),1).half().cuda()
-                #outputI = outputI.view(1, 768, 768)
+            
+
+                outputI = torch.cat((outputM, outputP),-1).half().cuda()
+                outputI = outputI.view(1, 1536)
                   
                 if  cont==0:
                   
@@ -150,6 +149,7 @@ class Encoder(nn.Sequential):
                   
                 
             except:
+                  I = torch.cat((I,outputI),0).half().cuda()
                   print('testing failed')
                 
         
