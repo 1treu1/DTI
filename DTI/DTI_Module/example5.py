@@ -202,7 +202,7 @@ def main(fold_n, lr):
             n = torch.squeeze(score)
             print(loss_fct)
             loss = loss_fct(n, label)
-            print(loss)
+          
             opt.zero_grad()
             loss.backward()
             opt.step()
