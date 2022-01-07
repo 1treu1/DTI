@@ -191,6 +191,7 @@ def main(fold_n, lr):
             
             with autocast():
               score =  model.forward(df_train,I)
+              print(score)
            
             label = torch.tensor(label).half().cuda()
             
@@ -200,7 +201,7 @@ def main(fold_n, lr):
 
             loss_fct = torch.nn.MSELoss()
             n = torch.squeeze(score)
-            print(n)
+            
             loss = loss_fct(n, label)
           
             opt.zero_grad()
