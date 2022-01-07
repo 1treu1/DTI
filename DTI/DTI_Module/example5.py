@@ -148,7 +148,7 @@ def main(fold_n, lr):
               'drop_last': True}
 
    
-    dataFolder = './dataset/No_binario/DAVIS/Small'
+    dataFolder = './dataset/No_binario/BindingDB/Small'
     df_train = pd.read_csv(dataFolder + '/train.csv')
     df_val = pd.read_csv(dataFolder + '/val.csv')
     df_test = pd.read_csv(dataFolder + '/test.csv')
