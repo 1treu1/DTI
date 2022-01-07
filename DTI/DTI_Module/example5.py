@@ -191,7 +191,7 @@ def main(fold_n, lr):
             
             with autocast():
               score =  model.forward(df_train,I)
-              print(score)
+              #print(score)
            
             label = torch.tensor(label).half().cuda()
             
