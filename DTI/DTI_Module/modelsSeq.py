@@ -90,7 +90,7 @@ class InteractionFlat(nn.Sequential):
         #print(I.shape)
         score = self.decoder(I)
         #print("DDDD")
-        print(I)
+        print(score)
         return score  
 
 class Encoder(nn.Sequential):
