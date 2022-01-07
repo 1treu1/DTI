@@ -206,7 +206,7 @@ def main(fold_n, lr):
             opt.zero_grad()
             loss.backward()
             opt.step()
-            
+            print(loss)
             if (i % 100 == 0):
                 
                 print('Training at Epoch ' + str(epo + 1) + ' iteration ' + str(i) + ' with loss ' + str(loss.cpu().detach().numpy()))
