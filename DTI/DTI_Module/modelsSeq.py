@@ -87,7 +87,7 @@ class InteractionFlat(nn.Sequential):
         #'''self.batch_size'''
         
         #print('Aquí5')
-        print(I.shape)
+        #print(I.shape)
         score = self.decoder(I)
         #print("DDDD")
         
