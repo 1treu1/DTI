@@ -200,7 +200,7 @@ def main(fold_n, lr):
 
             loss_fct = torch.nn.MSELoss()
             n = torch.squeeze(score)
-  
+            print(loss_fct)
             loss = loss_fct(n, label)
             print(loss)
             opt.zero_grad()
