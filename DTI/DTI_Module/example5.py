@@ -26,9 +26,9 @@ np.random.seed(1)
 
 from config import Set_config
 from stream import Set_Data 
+
 #from models import InteractionFlat
 from modelsSeq import InteractionFlat
-
 
 #-------------------------------------------------------
 
@@ -64,7 +64,7 @@ def texto():
 
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
-###################################################################
+##########################################################
 #Chemberta Model
 Chemberta_PATH= 'seyonec/PubChem10M_SMILES_BPE_450k' #Hugging Face Smiles
 molTokenizer = RobertaTokenizer.from_pretrained(Chemberta_PATH) #Selfberta Tokenizer
@@ -75,7 +75,7 @@ Paccman_PATH = '~/DTI/DTI/pretrained_roberta/exp4_longformer'
 PaccLarge_PATH = '/home/ubuntu/DTI/DTI/pretrained_roberta/exp4_longformer'
 proTokenizer = RobertaTokenizer.from_pretrained(PaccLarge_PATH) #Fastberta Tokenizer
 proEncoder = RobertaModel.from_pretrained(PaccLarge_PATH)  #Fastberta Model
-##############################################################################
+#############################################################
 def test(data_generator, model,df):
     
     y_pred = []
@@ -88,9 +88,13 @@ def test(data_generator, model,df):
         with autocast():
               score = model.forward(df,I)
        
-        loss_fct = torch.nn.BCELoss() 
-        m = torch.nn.Sigmoid()
-        logits = torch.squeeze(m(score))    
+        #loss_fct = torch.nn.BCELoss() 
+        #m = torch.nn.Sigmoid()
+        #logits = torch.squeeze(m(score)) 
+
+    
+        loss_fct = torch.nn.MSELoss()
+        logits = torch.squeeze(score)   
        
         label = torch.tensor(label).half().cuda()
 
@@ -100,59 +104,16 @@ def test(data_generator, model,df):
         count += 1
         
         logits = logits.detach().cpu().numpy()
-        #print(logits)
-        
-        #print("3")
-        label_ids = label.to('cpu').numpy()
-        y_label = y_label + label_ids.flatten().tolist()
-        y_pred = y_pred + logits.flatten().tolist()
-        #logit1.append(logits)
-        #print("count", count)
-        #print("y_label", label_ids.flatten().tolist() )
-        #print("y_predi", logits.flatten().tolist())
+
      
     loss = loss_accumulate/count
     
-    fpr, tpr, thresholds = roc_curve(y_label, y_pred)
-    print("4")
-    precision = tpr / (tpr + fpr)
-
-    f1 = 2 * precision * tpr / (tpr + precision + 0.00001)
-
-    thred_optim = thresholds[5:][np.argmax(f1[5:])]
-
-    #print("optimal threshold: " + str(thred_optim))
-
-    y_pred_s = [1 if i else 0 for i in (y_pred >= thred_optim)]
-    #print(y_pred_s)
-    auc_k = auc(fpr, tpr)
-    print("AUROC:" + str(auc_k))
-    print("AUPRC: "+ str(average_precision_score(y_label, y_pred)))
-
-    cm1 = confusion_matrix(y_label, y_pred_s)
-    #print('Confusion Matrix : \n', cm1)
-    #print('Recall : ', recall_score(y_label, y_pred_s))
-    #print('Precision : ', precision_score(y_label, y_pred_s))
-
-    total1=sum(sum(cm1))
-    #####from confusion matrix calculate accuracy
-    accuracy1=(cm1[0,0]+cm1[1,1])/total1
-    print ('Accuracy : ', accuracy1)
-
-    sensitivity1 = cm1[0,0]/(cm1[0,0]+cm1[0,1])
-    #print('Sensitivity : ', sensitivity1 )
-
-    specificity1 = cm1[1,1]/(cm1[1,0]+cm1[1,1])
-    #print('Specificity : ', specificity1)
+   
     
-
-    outputs = np.asarray([1 if i else 0 for i in (np.asarray(y_pred) >= 0.5)])
+    print("Saliendo de Testing")
     
-    #print("Saliendo de Testing")
-    
-    #return logits, y_pred, loss.item() #roc_auc_score(y_label, y_pred), average_precision_score(y_label, y_pred), f1_score(y_label, outputs), y_pred, loss.item()
-    return roc_auc_score(y_label, y_pred), average_precision_score(y_label, y_pred), f1_score(y_label, outputs), y_pred, loss.item()
-    ####################################################################################################
+    return loss.item()
+    ###############################################
     #FILE = "/content/drive/MyDrive/model/model.pth"
 def main(fold_n, lr):
     config = Set_config()
@@ -183,11 +144,11 @@ def main(fold_n, lr):
         
     params = {'batch_size': BATCH_SIZE,
               'shuffle': True,
-              'num_workers': 6, 
+              'num_workers': 4, 
               'drop_last': True}
 
    
-    dataFolder = './dataset/Binario/DTI/DAVIS/Small'
+    dataFolder = './dataset/No_binario/DAVIS/Small'
     df_train = pd.read_csv(dataFolder + '/train.csv')
     df_val = pd.read_csv(dataFolder + '/val.csv')
     df_test = pd.read_csv(dataFolder + '/test.csv')
@@ -212,6 +173,7 @@ def main(fold_n, lr):
 
     # early stopping
     max_auc = 0
+    min_loss = 0
     model_max = copy.deepcopy(model)
 
     
@@ -232,9 +194,12 @@ def main(fold_n, lr):
            
             label = torch.tensor(label).half().cuda()
             
-            loss_fct = torch.nn.BCELoss()
-            m = torch.nn.Sigmoid()
-            n = torch.squeeze(m(score))
+            #loss_fct = torch.nn.BCELoss()
+            #m = torch.nn.Sigmoid()
+            #n = torch.squeeze(m(score))
+
+            loss_fct = torch.nn.MSELoss()
+            n = torch.squeeze(score)
   
             loss = loss_fct(n, label)
             
@@ -256,18 +221,15 @@ def main(fold_n, lr):
         # every epoch test
         with torch.set_grad_enabled(False):
             
-            auc, auprc, f1, logits, loss = test(validation_generator, model,df_val)
+            loss = test(validation_generator, model,df_val)
             loss_history.append(loss)
             #loss = test(validation_generator, model,df_val)
-            if auc > max_auc:
+            if loss < min_loss:
                 model_max = copy.deepcopy(model)
-                max_auc = auc
+                min_loss = loss
             
-            print('Validation at Epoch '+ str(epo + 1) +  ' , Test loss: '+ str(loss)
-            +', AUC'+ str(auc)+', AUCPR'+ str(auc))
+            print('Validation at Epoch '+ str(epo + 1) +  ' , Test loss: '+ str(loss))
             ResultValidLoss.append(loss)
-            validAUCROC.append(auc)
-            validAUPRC.append(auprc)
             texto()
             #validloss.append(loss)
             #texto1()
@@ -277,18 +239,12 @@ def main(fold_n, lr):
 
     try:
         with torch.set_grad_enabled(False):
-            auc, auprc, f1, logits, loss = test(testing_generator, model_max,df_test)
+            loss = test(testing_generator, model_max,df_test)
             #Binario, Pre, loss = test(testing_generator, model_max,df_test)
             print("Salio de test")
-            print('Testing AUROC: ' + str(auc) + ' , AUPRC: ' + str(auprc) + ' , F1: '+str(f1) + ' , Test loss: '+str(loss))
-            #print( ' Test loss: '+str(loss))
-            print("Guardando en la lista")
-            ##################################
-            ResultTestLoss.append(loss)
-            testAUCROC.append(auc)
-            testAUPRC.append(auprc)
+            print(' , Test loss: '+str(loss))
+            ResultValidLoss.append(loss)
             texto()
-
     except Exception as e:
             #print('testing failed')
             print('testing failed: {}'.format(e))
@@ -297,7 +253,7 @@ def main(fold_n, lr):
             print(exc_type, fname, exc_tb.tb_lineno)
             #texto3()
     return model_max, loss_history
-################################################################################################################
+###########################################################
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -305,8 +261,7 @@ s = time()
 torch.cuda.empty_cache()
 model_max, loss_history = main(1, 5e-6)
 e = time()
-q = e-s
-r = (q*60)/3600
+print(e-s)
 lh = list(filter(lambda x: x < 1, loss_history))
 plt.plot(lh)
-plt.savefig('fig4.jpg')
+plt.savefig('fig5.jpg')

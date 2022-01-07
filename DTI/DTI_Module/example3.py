@@ -303,3 +303,4 @@ r = (q*60)/3600
 print(r,"min")
 lh = list(filter(lambda x: x < 1, loss_history))
 plt.plot(lh)
+plt.savefig('fig3.jpg')
