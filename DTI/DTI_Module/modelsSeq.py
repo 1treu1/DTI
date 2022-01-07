@@ -81,7 +81,7 @@ class InteractionFlat(nn.Sequential):
         #f = self.icnn2(self.icnn1(i_v))
         index= index.cpu().detach().numpy()
         I = self.Encoder( df, index)
-        print(I)
+        print(df)
        
         #print(f.shape)
         #f = f.view(int(self.batch_size/self.gpus), -1)
