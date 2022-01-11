@@ -26,8 +26,8 @@ np.random.seed(1)
 
 from config import Set_config
 from stream import Set_Data 
-#from models import InteractionFlat
-from modelsSeq import InteractionFlat
+from models import InteractionFlat
+#from modelsSeq import InteractionFlat
 
 
 #-------------------------------------------------------
