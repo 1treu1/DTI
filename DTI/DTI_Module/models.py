@@ -58,14 +58,9 @@ class InteractionFlat(nn.Sequential):
         #self.icnn2 = nn.Conv2d(3, 3, (300,300), padding = 0)
         
         self.decoder = nn.Sequential(
-            nn.Linear(self.flatten_dim, 1024),
+            nn.Linear(self.flatten_dim, 512),
             nn.ReLU(True),
-                      
-            nn.BatchNorm1d(1024),
-            nn.Linear(1024, 512),
-            nn.ReLU(True),
-
-
+            
             nn.BatchNorm1d(512),
             nn.Linear(512, 64),
             nn.ReLU(True),
