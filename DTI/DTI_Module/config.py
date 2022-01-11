@@ -1,7 +1,7 @@
 
 def Set_config():
     config = {}
-    config['batch_size'] = 6
+    config['batch_size'] = 4
     config['input_dim_drug'] = 23532
     config['input_dim_target'] = 16693
     config['train_epoch'] = 13
