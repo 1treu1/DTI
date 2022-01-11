@@ -1,4 +1,4 @@
-
+"""
 def Set_config():
     config = {}
     config['batch_size'] = 4
@@ -56,4 +56,3 @@ def Set_config():
     config['hidden_dropout_prob'] = 0.1
     config['flat_dim'] = 1536 #110592 #1760268#78192
     return config
-    """
