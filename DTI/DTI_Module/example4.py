@@ -114,7 +114,7 @@ def test(data_generator, model,df):
     loss = loss_accumulate/count
     
     fpr, tpr, thresholds = roc_curve(y_label, y_pred)
-    print("4")
+    #print("4")
     precision = tpr / (tpr + fpr)
 
     f1 = 2 * precision * tpr / (tpr + precision + 0.00001)
@@ -303,7 +303,7 @@ warnings.filterwarnings('ignore')
 
 s = time()
 torch.cuda.empty_cache()
-model_max, loss_history = main(1, 5e-6)
+model_max, loss_history = main(1, 5e-5)
 e = time()
 q = e-s
 r = (q*60)/3600
