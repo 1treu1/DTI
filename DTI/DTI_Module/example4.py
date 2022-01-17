@@ -11,6 +11,7 @@ import sys
 
 #-------------------------------------------------------
 import transformers as tf
+import pynvml
 from transformers import RobertaTokenizer,RobertaModel
 
 
@@ -247,6 +248,19 @@ def main(fold_n, lr):
                 print('Training at Epoch ' + str(epo + 1) + ' iteration ' + str(i) + ' with loss ' + str(loss.cpu().detach().numpy()))
                 ResultLoss.append(loss.cpu().detach().numpy())
                 texto()
+                #####################################################
+                pynvml.nvmlInit()
+                # Aquí 1 es la identificación de la GPU
+                handle = pynvml.nvmlDeviceGetHandleByIndex(1)
+                meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
+                print('Tamaño total de la memoria')
+                print (((meminfo.total)/1024)/1024) # Tamaño total de la memoria de video de la segunda tarjeta gráfica
+                print('Memoria usada')
+                print (((meminfo.used)/1024)/1024) # Aquí hay bytes, así que si quieres obtener megaM, debes dividir entre 1024 ** 2
+                print('Memoria restante (Libre)')
+                print (((meminfo.free)/1024)/1024) # Tamaño de memoria de video restante de la segunda tarjeta gráfica
+                #####################################################
+
 
             #print('after train')    
             #nombre=input()
