@@ -81,7 +81,6 @@ class InteractionFlat(nn.Sequential):
         #f = self.icnn2(self.icnn1(i_v))
         index= index.cpu().detach().numpy()
         I = self.Encoder( df, index)
-        #print(index)
        
         #print(f.shape)
         #f = f.view(int(self.batch_size/self.gpus), -1)
@@ -91,7 +90,6 @@ class InteractionFlat(nn.Sequential):
         #print(I.shape)
         score = self.decoder(I)
         #print("DDDD")
-        
         return score  
 
 class Encoder(nn.Sequential):
@@ -156,5 +154,5 @@ class Encoder(nn.Sequential):
                 
         
         I=I.half().cuda()
-        
+
         return I 

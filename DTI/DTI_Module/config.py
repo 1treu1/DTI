@@ -31,7 +31,7 @@ def Set_config():
 """
 def Set_config():
     config = {}
-    config['batch_size'] = 4
+    config['batch_size'] = 16
     config['input_dim_drug'] = 23532
     config['input_dim_target'] = 16693
     config['train_epoch'] = 13
@@ -54,5 +54,5 @@ def Set_config():
     config['num_attention_heads'] = 12
     config['attention_probs_dropout_prob'] = 0.1
     config['hidden_dropout_prob'] = 0.1
-    config['flat_dim'] = 97200#110592#1536 #110592 #1760268#78192
+    config['flat_dim'] = 110592 #1760268#78192
     return config

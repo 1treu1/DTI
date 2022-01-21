@@ -121,6 +121,8 @@ def test(data_generator, model,df):
     f1 = 2 * precision * tpr / (tpr + precision + 0.00001)
 
     thred_optim = thresholds[5:][np.argmax(f1[5:])]
+    print('thred_optim')
+    print(thred_optim)
 
     #print("optimal threshold: " + str(thred_optim))
 
@@ -155,6 +157,7 @@ def test(data_generator, model,df):
     return roc_auc_score(y_label, y_pred), average_precision_score(y_label, y_pred), f1_score(y_label, outputs), y_pred, loss.item()
     ####################################################################################################
     #FILE = "/content/drive/MyDrive/model/model.pth"
+#FILE = "/content/drive/MyDrive/model/model.pth"
 def main(fold_n, lr):
     config = Set_config()
     
@@ -260,10 +263,7 @@ def main(fold_n, lr):
                 print('Memoria restante (Libre)')
                 print (((meminfo.free)/1024)/1024) # Tamaño de memoria de video restante de la segunda tarjeta gráfica
                 #####################################################
-
-
-            #print('after train')    
-            #nombre=input()
+            
           
 
             
@@ -283,8 +283,6 @@ def main(fold_n, lr):
             validAUCROC.append(auc)
             validAUPRC.append(auprc)
             texto()
-            #validloss.append(loss)
-            #texto1()
     
     print('--- Go for Testing ---')
    
@@ -302,7 +300,6 @@ def main(fold_n, lr):
             testAUCROC.append(auc)
             testAUPRC.append(auprc)
             texto()
-
     except Exception as e:
             #print('testing failed')
             print('testing failed: {}'.format(e))
@@ -311,6 +308,7 @@ def main(fold_n, lr):
             print(exc_type, fname, exc_tb.tb_lineno)
             #texto3()
     return model_max, loss_history
+
 ################################################################################################################
 import warnings
 warnings.filterwarnings('ignore')
