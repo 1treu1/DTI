@@ -180,8 +180,8 @@ def main(fold_n, lr):
       print("Let's use", torch.cuda.device_count(), "GPUs!")
       #model = nn.DataParallel(model, dim = 0)
       model = nn.DataParallel(model)
-      
-    model = model.to(device)
+
+    #model = model.to(device)
 
     #print("Cargando el modelo")
     #model.load_state_dict(torch.load('/content/drive/MyDrive/DTI/model'))
