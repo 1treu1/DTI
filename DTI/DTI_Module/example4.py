@@ -122,13 +122,11 @@ def test(data_generator, model,df):
     ###############################################
     try:
       thred_optim = thresholds[5:][np.argmax(f1[5:])]
-      print('thred_optim')
-      print(thred_optim)
+      
     except:
       thred_optim = thresholds[1:][np.argmax(f1[1:])]
     ###############################################
-    print('thred_optim')
-    print(thred_optim)
+    
 
     #print("optimal threshold: " + str(thred_optim))
 
