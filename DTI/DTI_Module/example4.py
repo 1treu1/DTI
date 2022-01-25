@@ -258,7 +258,7 @@ def main(fold_n, lr):
                 #####################################################
                 pynvml.nvmlInit()
                 # Aquí 1 es la identificación de la GPU
-                handle = pynvml.nvmlDeviceGetHandleByIndex(1)
+                handle = pynvml.nvmlDeviceGetHandleByIndex(0)
                 meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
                 print('Tamaño total de la memoria')
                 print (((meminfo.total)/1024)/1024) # Tamaño total de la memoria de video de la segunda tarjeta gráfica
