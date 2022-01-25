@@ -173,7 +173,7 @@ def main(fold_n, lr):
     Pre = []
     Binario = []
     model = InteractionFlat(molTokenizer, proTokenizer, molEncoder, proEncoder,**config)
-    #model = model.cuda()
+    model = model.cuda()
     #model = model.to(device)
 
     if torch.cuda.device_count() > 1:
@@ -181,7 +181,7 @@ def main(fold_n, lr):
       #model = nn.DataParallel(model, dim = 0)
       model = nn.DataParallel(model)
 
-    model = model.to(device)
+    #model = model.to(device)
 
     #print("Cargando el modelo")
     #model.load_state_dict(torch.load('/content/drive/MyDrive/DTI/model'))
