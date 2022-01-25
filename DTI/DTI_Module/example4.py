@@ -178,8 +178,8 @@ def main(fold_n, lr):
 
     if torch.cuda.device_count() > 1:
       print("Let's use", torch.cuda.device_count(), "GPUs!")
-      #model = nn.DataParallel(model, dim = 0)
-      model = nn.DataParallel(model)
+      model = nn.DataParallel(model, dim = 0)
+      #model = nn.DataParallel(model)
 
     #model = model.to(device)
 
