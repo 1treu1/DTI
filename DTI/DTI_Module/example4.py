@@ -319,7 +319,7 @@ warnings.filterwarnings('ignore')
 
 s = time()
 torch.cuda.empty_cache()
-model_max, loss_history = main(1, 5e-5)
+model_max, loss_history = main(1, 5e-3)
 e = time()
 q = e-s
 r = (q*60)/3600
