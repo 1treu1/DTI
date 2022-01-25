@@ -119,8 +119,14 @@ def test(data_generator, model,df):
     precision = tpr / (tpr + fpr)
 
     f1 = 2 * precision * tpr / (tpr + precision + 0.00001)
-
-    thred_optim = thresholds[5:][np.argmax(f1[5:])]
+    ###############################################
+    try:
+      thred_optim = thresholds[5:][np.argmax(f1[5:])]
+      print('thred_optim')
+      print(thred_optim)
+    except:
+      thred_optim = thresholds[1:][np.argmax(f1[1:])]
+    ###############################################
     print('thred_optim')
     print(thred_optim)
 
