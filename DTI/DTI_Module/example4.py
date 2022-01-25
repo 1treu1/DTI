@@ -256,16 +256,16 @@ def main(fold_n, lr):
                 ResultLoss.append(loss.cpu().detach().numpy())
                 texto()
                 #####################################################
-                pynvml.nvmlInit()
+                #pynvml.nvmlInit()
                 # Aquí 1 es la identificación de la GPU
-                handle = pynvml.nvmlDeviceGetHandleByIndex(0)
-                meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
-                print('Tamaño total de la memoria')
-                print (((meminfo.total)/1024)/1024) # Tamaño total de la memoria de video de la segunda tarjeta gráfica
-                print('Memoria usada')
-                print (((meminfo.used)/1024)/1024) # Aquí hay bytes, así que si quieres obtener megaM, debes dividir entre 1024 ** 2
-                print('Memoria restante (Libre)')
-                print (((meminfo.free)/1024)/1024) # Tamaño de memoria de video restante de la segunda tarjeta gráfica
+                #handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+                #meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
+                #print('Tamaño total de la memoria')
+                #print (((meminfo.total)/1024)/1024) # Tamaño total de la memoria de video de la segunda tarjeta gráfica
+                #print('Memoria usada')
+                #print (((meminfo.used)/1024)/1024) # Aquí hay bytes, así que si quieres obtener megaM, debes dividir entre 1024 ** 2
+                #print('Memoria restante (Libre)')
+                #print (((meminfo.free)/1024)/1024) # Tamaño de memoria de video restante de la segunda tarjeta gráfica
                 #####################################################
             
           
