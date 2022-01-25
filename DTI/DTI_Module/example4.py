@@ -194,7 +194,7 @@ def main(fold_n, lr):
         
     params = {'batch_size': BATCH_SIZE,
               'shuffle': True,
-              'num_workers': 6, 
+              'num_workers': 4, 
               'drop_last': True}
 
    
