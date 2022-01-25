@@ -173,11 +173,13 @@ def main(fold_n, lr):
     Pre = []
     Binario = []
     model = InteractionFlat(molTokenizer, proTokenizer, molEncoder, proEncoder,**config)
-    model = model.cuda()
+    #model = model.cuda()
+    model = model.to(device)
 
     if torch.cuda.device_count() > 1:
       print("Let's use", torch.cuda.device_count(), "GPUs!")
-      model = nn.DataParallel(model, dim = 0)
+      #model = nn.DataParallel(model, dim = 0)
+      model = nn.DataParallel(model)
 
 
     #print("Cargando el modelo")
