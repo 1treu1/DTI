@@ -8,13 +8,10 @@ from  torch.cuda.amp import autocast
 import copy
 import os
 import sys
-
 #-------------------------------------------------------
 import transformers as tf
 import pynvml
 from transformers import RobertaTokenizer,RobertaModel
-
-
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
@@ -24,15 +21,11 @@ from sklearn.metrics import roc_auc_score, average_precision_score, f1_score, ro
 from sklearn.model_selection import KFold
 torch.manual_seed(1)    # reproducible torch:2 np:3
 np.random.seed(1)
-
 from config import Set_config
 from stream import Set_Data 
 #from models import InteractionFlat
 from modelsSeq import InteractionFlat
-
-
 #-------------------------------------------------------
-
 trainAUPRC  = []
 trainAUCROC  = []
 ResultLoss  = []
@@ -44,7 +37,6 @@ ResultTestLoss = []
 ResultValidLoss = []
 logit1 = []
 max1 = []
-
 def texto():
     np . savetxt ( "trainAUPRC.txt" , trainAUPRC )
     np . savetxt ( "trainAUCROC.txt" , trainAUCROC )
@@ -56,13 +48,9 @@ def texto():
     np . savetxt ( "testLoss.txt" , ResultTestLoss )
     np . savetxt ( "validLoss.txt" , ResultValidLoss )
     np . savetxt ( "max.txt" , max1 )
-
     
     #Result = np.loadtxt("") 
-
-
 #-------------------------------------------------------
-
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
 ###################################################################
@@ -70,7 +58,6 @@ device = torch.device("cuda:0" if use_cuda else "cpu")
 Chemberta_PATH= 'seyonec/PubChem10M_SMILES_BPE_450k' #Hugging Face Smiles
 molTokenizer = RobertaTokenizer.from_pretrained(Chemberta_PATH) #Selfberta Tokenizer
 molEncoder = RobertaModel.from_pretrained(Chemberta_PATH) #Selfberta Model
-
 #Paccman Model
 Paccman_PATH = '~/DTI/DTI/pretrained_roberta/exp4_longformer'
 PaccLarge_PATH = '/home/ubuntu/DTI/DTI/pretrained_roberta/exp4_longformer'
@@ -94,7 +81,6 @@ def test(data_generator, model,df):
         logits = torch.squeeze(m(score))    
        
         label = torch.tensor(label).half().cuda()
-
         loss = loss_fct(logits, label)
         
         loss_accumulate += loss
@@ -122,37 +108,33 @@ def test(data_generator, model,df):
     ###############################################
     try:
       thred_optim = thresholds[5:][np.argmax(f1[5:])]
-      
+      print('thred_optim')
+      print(thred_optim)
     except:
       thred_optim = thresholds[1:][np.argmax(f1[1:])]
     ###############################################
-    
+    print('thred_optim')
+    print(thred_optim)
 
     #print("optimal threshold: " + str(thred_optim))
-
     y_pred_s = [1 if i else 0 for i in (y_pred >= thred_optim)]
     #print(y_pred_s)
     auc_k = auc(fpr, tpr)
     print("AUROC:" + str(auc_k))
     print("AUPRC: "+ str(average_precision_score(y_label, y_pred)))
-
     cm1 = confusion_matrix(y_label, y_pred_s)
     #print('Confusion Matrix : \n', cm1)
     #print('Recall : ', recall_score(y_label, y_pred_s))
     #print('Precision : ', precision_score(y_label, y_pred_s))
-
     total1=sum(sum(cm1))
     #####from confusion matrix calculate accuracy
     accuracy1=(cm1[0,0]+cm1[1,1])/total1
     print ('Accuracy : ', accuracy1)
-
     sensitivity1 = cm1[0,0]/(cm1[0,0]+cm1[0,1])
     #print('Sensitivity : ', sensitivity1 )
-
     specificity1 = cm1[1,1]/(cm1[1,0]+cm1[1,1])
     #print('Specificity : ', specificity1)
     
-
     outputs = np.asarray([1 if i else 0 for i in (np.asarray(y_pred) >= 0.5)])
     
     #print("Saliendo de Testing")
@@ -165,7 +147,6 @@ def test(data_generator, model,df):
 def main(fold_n, lr):
     config = Set_config()
     
-
     BATCH_SIZE = config['batch_size']
     train_epoch = 40
         
@@ -174,15 +155,9 @@ def main(fold_n, lr):
     Binario = []
     model = InteractionFlat(molTokenizer, proTokenizer, molEncoder, proEncoder,**config)
     model = model.cuda()
-    #model = model.to(device)
-
     if torch.cuda.device_count() > 1:
       print("Let's use", torch.cuda.device_count(), "GPUs!")
       model = nn.DataParallel(model, dim = 0)
-      #model = nn.DataParallel(model)
-
-    #model = model.to(device)
-
     #print("Cargando el modelo")
     #model.load_state_dict(torch.load('/content/drive/MyDrive/DTI/model'))
     #print("Modelo cargado")
@@ -194,15 +169,13 @@ def main(fold_n, lr):
         
     params = {'batch_size': BATCH_SIZE,
               'shuffle': True,
-              'num_workers': 4, 
+              'num_workers': 6, 
               'drop_last': True}
-
    
     dataFolder = './dataset/Binario/DTI/DAVIS/Small'
     df_train = pd.read_csv(dataFolder + '/train.csv')
     df_val = pd.read_csv(dataFolder + '/val.csv')
     df_test = pd.read_csv(dataFolder + '/test.csv')
-
          
     
     
@@ -216,18 +189,14 @@ def main(fold_n, lr):
     print("testing set")
     testing_set = Set_Data(df_test.index.values, df_test.Label.values, df_test.index.values)
     testing_generator = data.DataLoader(testing_set, **params)
-
     #for i, (I,label) in enumerate(testing_generator):
     #  print('I')
     # print(I)
-
     # early stopping
     max_auc = 0
     model_max = copy.deepcopy(model)
-
     
   
-
     print('--- Go for Training ---')
     torch.backends.cudnn.benchmark = True
   
@@ -261,7 +230,7 @@ def main(fold_n, lr):
                 #####################################################
                 #pynvml.nvmlInit()
                 # Aquí 1 es la identificación de la GPU
-                #handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+                #handle = pynvml.nvmlDeviceGetHandleByIndex(1)
                 #meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
                 #print('Tamaño total de la memoria')
                 #print (((meminfo.total)/1024)/1024) # Tamaño total de la memoria de video de la segunda tarjeta gráfica
@@ -272,7 +241,6 @@ def main(fold_n, lr):
                 #####################################################
             
           
-
             
         # every epoch test
         with torch.set_grad_enabled(False):
@@ -293,7 +261,6 @@ def main(fold_n, lr):
     
     print('--- Go for Testing ---')
    
-
     try:
         with torch.set_grad_enabled(False):
             auc, auprc, f1, logits, loss = test(testing_generator, model_max,df_test)
@@ -315,14 +282,12 @@ def main(fold_n, lr):
             print(exc_type, fname, exc_tb.tb_lineno)
             #texto3()
     return model_max, loss_history
-
 ################################################################################################################
 import warnings
 warnings.filterwarnings('ignore')
-
 s = time()
 torch.cuda.empty_cache()
-model_max, loss_history = main(1, 5e-3)
+model_max, loss_history = main(1, 5e-5)
 e = time()
 q = e-s
 r = (q*60)/3600
