@@ -1,0 +1,12 @@
+subword-nmt
+transformers
+fastapi
+uvicorn
+aiofile
+python-multipart
+pyngrok
+numpy
+pandas
+matplotlib
+nest-asyncio
+scikit-learn
