@@ -13,7 +13,8 @@ from Model5.main5 import main5
 ##############
 from fastapi.middleware.cors import CORSMiddleware
 
-
+from os import system
+system("ngrok authtoken 27o3iOihYzmkquU8mRmYTYWaRrk_7rwHhJLBZHUFtoN6YFK7d")
 
 
 

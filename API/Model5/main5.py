@@ -139,7 +139,7 @@ def main5(fold_n, lr, Api):
     #Fullmodel
     model=Interaction_Module(**config)
     
-    FILE = "/content/drive/MyDrive/DTI/Prueba_Funcionando/Modelo_5/Pruebas/model5.pth"
+    FILE = "./model5.pth"
     model.load_state_dict(torch.load(FILE))
     model = model.cuda()
 

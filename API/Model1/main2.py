@@ -106,7 +106,7 @@ def main1(fold_n, lr, Api):
     
     loss_history = []
     logits = []
-    dirModel = '/content/drive/MyDrive/DTI/Prueba_Funcionando/Modelo_1/Pruebas/P12/model/model.pth'
+    dirModel = './API/model5.pth'
     model = BIN_Interaction_Flat(**config)
     model.load_state_dict(torch.load(dirModel))
     model = model.cuda()

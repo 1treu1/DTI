@@ -1,1 +1,0 @@
-from ..Modelo_5.Pruebas import setup
