@@ -1,0 +1,13 @@
+.text-import {
+    color: #97c933 !important;
+   }
+/* #header {
+    width: 80px;
+} */
+#footer {
+    background: linear-gradient(90deg,#1c3643,#273b47 25%,#1e5372);
+}
+
+#footer a {
+    color: white;
+}
