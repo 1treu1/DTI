@@ -9,11 +9,8 @@ from sklearn.preprocessing import OneHotEncoder
 from subword_nmt.apply_bpe import BPE
 import codecs
 
-<<<<<<< HEAD
 vocab_path = './ESPF/protein_codes_uniprot.txt'
-=======
-vocab_path = 'prueba/API/ESPF/protein_codes_uniprot.txt'
->>>>>>> 9f9b3042a6bb3db4b8ff49520bcdcd23782dca3d
+vocab_path = './ESPF/protein_codes_uniprot.txt'
 bpe_codes_protein = codecs.open(vocab_path)
 pbpe = BPE(bpe_codes_protein, merges=-1, separator='')
 sub_csv = pd.read_csv('./ESPF/subword_units_map_uniprot.csv')
