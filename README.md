@@ -5,15 +5,15 @@ Esta API, esta diseñada para predecir la interacción entre un farmaco(represen
 * 1 No interactua.
 
 # Requerimientos
-
+* Tener GPU Nvidia
 # Instalación
 Para evitar problemas en la instalación, hicimos un contenedor para correr la API:
 
 ```bash
-  docker run -it 11treu11/dti -p 8000:8000 --gpus all /bin/bash
+  sudo docker run -it -p 8000:8000 --gpus all 11treu11/dti /bin/bash
 ```
 Imagen 1
-
+Corriendo localmente:
 ```bash
   cd
   cd DTI/API
@@ -21,3 +21,7 @@ Imagen 1
   python API.py
 ```
 Imagen2
+* Abre el navegador y accede a esta dirección
+```bash
+http://127.0.0.1:8000
+```
